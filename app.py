@@ -2,6 +2,8 @@
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from helper_functions import salt_password
+from flask_bcrypt import Bcrypt
 
 # Variable to grab main application file
 app = Flask(__name__)
@@ -9,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://be8d953f0b3211:0ab47492@us-cdbr
 
 # Database connection
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 
 
 # Set up user model
@@ -33,7 +36,20 @@ def signup():
         _email = request.form['email']
         _password = request.form['password']
 
+        salted_pass = salt_password(_password)
+        hashed_pass = bcrypt.generate_password_hash(salted_pass)
 
+        try:
+            new_user = User(username=_username, 
+                            email=_email, 
+                            password=hashed_pass)
+            db.session.add(new_user)
+            db.session.commit()
+        except:
+            print("There was an error creating your account.")
+            return redirect('/')
+
+        return redirect('/')
 
     return render_template('auth/reg.html')
 
