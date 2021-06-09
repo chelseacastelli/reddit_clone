@@ -21,10 +21,9 @@ class User(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-
 @app.route('/')
 def index():
-    return 'hello world'
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
