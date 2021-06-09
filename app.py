@@ -25,6 +25,18 @@ class User(db.Model):
 def index():
     return render_template('index.html')
 
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        _username = request.form['username']
+        _email = request.form['email']
+        _password = request.form['password']
+
+
+
+    return render_template('auth/reg.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
 
