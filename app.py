@@ -4,10 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from helper_functions import salt_password
 from flask_bcrypt import Bcrypt
+from config import DevelopmentConfig
 
 # Variable to grab main application file
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://be8d953f0b3211:0ab47492@us-cdbr-east-04.cleardb.com/heroku_49586dd45308328'
+# To import as Production app, change to ProductionConfig from config script
+app.config.from_object(DevelopmentConfig)
+
 
 # Database connection
 db = SQLAlchemy(app)
